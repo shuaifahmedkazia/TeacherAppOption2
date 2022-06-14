@@ -1,0 +1,21 @@
+{%extends 'appbase.html'%}
+
+{%block contents%}
+
+<div class="container p-3 my-3 bg-dark text-white">
+  <h1>Import the data</h1>
+  <form action="{%url 'importBulk'%}" method="POST" enctype="multipart/form-data">
+    {%csrf_token%}
+    <input type="file" name="myfile" required>
+    <button type="submit" class="btn btn-primary">Import file</button>
+  </form>
+
+  <h2>Click here to import Default Values <a href="{%url 'importBulk'%}"><button type="submit" class="btn btn-primary">Import</button></a> </h2>
+ {% if messages %}
+     {% for message in messages %}
+       <font color='PINK'> {{ message }}</font>
+     {% endfor %}
+  {% endif %}
+
+</div>
+{%endblock%}

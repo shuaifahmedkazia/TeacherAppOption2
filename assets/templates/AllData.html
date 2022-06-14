@@ -1,0 +1,69 @@
+{%extends 'appbase.html'%}
+
+{%block contents%}
+
+<div class="container p-3 my-3 bg-light text-white">
+    <div class="col toprow" style="display:flex;justify-content:space-between;height: 36px;
+    margin-bottom: 20px;">
+        <h1 style="color:#4b42ad ;">Teachers</h1>
+        <div class="add_btns"  style="display:flex;justify-content:space-between;grid-column-gap: 20px;">
+            <a href="{%url 'AddTeacherData'%}" class="btn btn-primary">Add New</a>
+            <a href="{%url 'importedForm'%}" class="btn btn-primary">Import From File</a>
+        </div>
+       
+    </div>
+    <form action="{%url 'DataView'%}" method="post">
+        {%csrf_token%}
+    <div class="form-group" style="display: flex;grid-column-gap:10px">
+      <input type="user" class="form-control" name="filtertext" placeholder="Last Name or Subject Name" id="user">
+      <button type="submit" class="btn btn-primary">Filter</button>
+      <button type="submit" class="btn btn-info">Clear</button>
+    </div>
+  
+    
+  </form>
+    <span>
+        <strong>Note:</strong><p style="color:RED">Checked Image extension also, avoided Case sensitive and not matached with csv file with pic folders</p>
+    </span>
+    <table border="2px" class="table table-hover">
+                    <thead style="background: #4b42ad !important;
+                    color: white;">
+                    <tr class="">
+                        <th scope="col">S.No</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email Address</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Room Number</th>
+                        <th scope="col">Subjects</th>
+                        <th scope="col">Profile Pic</th>
+                      
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in data %}
+                    <tr scope="row" style="color: BLUE; background-color:White">
+                        <td>{{forloop.counter}}</td>
+                        <td>{{i.FirstName}}</td>
+                        <td>{{i.LastName}}</td>
+                        <td>{{i.EmailAddress}}</td>
+                        <td>{{i.PhoneNumber}}</td>
+                        <td>{{i.RoomNumber}}</td>
+                        
+                        <td>{% for subject in i.Subjectstaught.all %}
+                            {{subject.Subjectstaught}}, 
+                            {% endfor %}
+                        </td>
+                        
+                        <td><a href="/GetProfilePage/?uid={{ i.id }}"><img src="/media/profilepic/{{i.Profilepicture}}" width="45" height="40"></a> </td>
+                    </tr>
+                    {% endfor %}
+
+
+                    </tbody>
+                </table>
+
+
+
+</div>
+{%endblock%}
