@@ -24,7 +24,7 @@ Install python, pip and django if already not installed
 Clone the project or download the zip
 
 ```bash
-  git clone https://github.com/shuaifahmedkazia/TeacherApp.git
+  git clone https://github.com/shuaifahmedkazia/TeacherAppOption1.git
 ```
 
 Go to the project directory
