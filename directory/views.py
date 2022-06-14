@@ -159,7 +159,7 @@ class ImportBulkView(View):
 
             # l2 = len(FirstName)
             sub = Subjectstaught.split(', ')
-            subjects = Subjectstaught.split(', ')
+            subjects = Subjectstaught.split(',')
            
             sub = len(sub)
             if sub <= 5:
@@ -170,6 +170,7 @@ class ImportBulkView(View):
 
                 for res in subjects:
                     res = res.lower()
+                    res = res.strip()
                   
                     r = SubjectsModel.objects.get(Subjectstaught=res)
                  
@@ -193,6 +194,7 @@ class ImportBulkView(View):
             li = checkData()
             data_added = 0
             data_skipped = 0
+            subject_not_found = 0
             for i in df.index:
                 FirstName = df['First Name'][i]
                 LastName = df['Last Name'][i]
@@ -220,17 +222,21 @@ class ImportBulkView(View):
                         
                         for res in subjects:
                             res = res.lower()
+                            res = res.strip()
                   
-                            r = SubjectsModel.objects.get(Subjectstaught=res)
-                 
-                            newteacher.Subjectstaught.add(r)
+                            r = SubjectsModel.objects.filter(Subjectstaught=res).first()
+                            if r is not None:
+                                newteacher.Subjectstaught.add(r)
+                            else:
+                                subject_not_found +=1
+
 
                         data_added +=1
                     except:
                         data_skipped +=1
                         pass
 
-            messages.success(request, str(data_added)+' Data Imported and ' +str(data_skipped)+' Data Skipped Due to Value error or duplicate entry')
+            messages.success(request, str(data_added)+' Data Imported and ' +str(data_skipped)+' Data Skipped Due to Value error or duplicate entry'+str(subject_not_found)+" subject not linked to any teacher due to unavailablity ")
             return render(request, 'importerform.html', {})
 
 
